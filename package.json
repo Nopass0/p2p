@@ -1,0 +1,29 @@
+{
+  "name": "p2p",
+  "module": "src/app.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "bun src/app.ts --watch",
+    "start": "bun src/app.ts",
+    "db:push": "bunx prisma db push"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@elysiajs/cors": "^1.1.1",
+    "@elysiajs/swagger": "^1.1.5",
+    "@prisma/client": "5.21.1",
+    "@types/node-fetch": "^2.6.11",
+    "elysia": "^1.1.23",
+    "i": "^0.3.7",
+    "multer": "^1.4.5-lts.1",
+    "prisma": "^5.21.1",
+    "telegraf": "^4.16.3",
+    "winston": "^3.15.0",
+    "zod": "^3.23.8"
+  }
+}

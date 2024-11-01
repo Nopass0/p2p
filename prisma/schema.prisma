@@ -1,0 +1,72 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(uuid())
+  telegramId    BigInt        @unique
+  username      String?
+  isAdmin       Boolean       @default(false)
+  balance       Float         @default(0)
+  maxBalance    Float         @default(0)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  transactions  Transaction[]
+  screenshots   Screenshot[]
+}
+
+enum TransactionStatus {
+  PENDING
+  ACCEPTED
+  COMPLETED
+  FAILED
+  EXPIRED
+  CANCELLED
+}
+
+model Transaction {
+id            String            @id
+amount        Float
+currency      String
+status        TransactionStatus @default(PENDING)
+  paymentMethod String
+  userId        String?
+  user          User?            @relation(fields: [userId], references: [id])
+  screenshot    Screenshot?
+  destination   String?          // Номер карты или счета получателя
+  callbackUrl   String?          // URL для уведомлений
+  metadata      Json?            // Дополнительные данные
+  expiresAt     DateTime
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+}
+
+model Screenshot {
+  id            String       @id @default(uuid())
+  path          String
+  transactionId String      @unique
+  transaction   Transaction @relation(fields: [transactionId], references: [id])
+  userId        String
+  user          User        @relation(fields: [userId], references: [id])
+  createdAt     DateTime    @default(now())
+  verified      Boolean     @default(false)
+  verifiedAt    DateTime?
+  verifiedBy    String?     // ID администратора, подтвердившего скриншот
+}
+
+model ExchangeRate {
+  id        Int      @id @default(autoincrement())
+  from      String
+  to        String
+  rate      Float
+  source    String
+  createdAt DateTime @default(now())
+
+  @@unique([from, to, source], name: "from_to_source")
+}
