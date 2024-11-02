@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "bun src/app.ts --watch",
     "start": "bun src/app.ts",
+    "npm:run": "npm run src/app.ts",
     "db:push": "bunx prisma db push"
   },
   "devDependencies": {
