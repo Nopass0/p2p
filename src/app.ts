@@ -9,6 +9,7 @@ import logger from "./utils/logger";
 
 async function main() {
   try {
+    console.log("Starting server...");
     //check db
     await db.$connect();
     logger.info("Database connected successfully");
